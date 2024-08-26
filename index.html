@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المحاضرات والتقييم</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #000000, #333333);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .poem {
+            font-style: italic;
+            margin: 30px 0;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            background-color: #cccccc;
+        }
+        
+        .emoji-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .emoji {
+            font-size: 2em;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .emoji:hover {
+            transform: scale(1.2);
+        }
+        
+        #feedback-form {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .fade-out {
+            animation: fadeOut 2s forwards;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+            }
+        }
+        
+        .thank-you-text {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        #login-container {
+            text-align: center;
+        }
+        
+        #token-input {
+            padding: 10px;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        
+        #feedback-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .feedback-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container" class="container">
+        <h1>تسجيل الدخول</h1>
+        <input type="text" id="token-input" placeholder="أدخل رمز الدخول الخاص بك">
+        <button class="button" onclick="login()">دخول</button>
+    </div>
+
+    <div id="main-container" class="container hidden">
+        <div id="main-content">
+            <h1>محاضرة علم التكنولوجيا والتقنية والبرمجة</h1>
+            <div class="poem">
+                <p>رسالة شكر:</p>
+                <p>أَلا يا نَدامايَ وَخِلّانَ مَجلِسي<br>
+                شَكَرتُ حُضورَكُم وَحُسنَ اسْتِماعِ</p>
+                <p>لَقَد كُنتُمُ كَالغَيثِ لِلأَرضِ الظَّمأى<br>
+                وَكَالنُّورِ يَسري في دُجى الأَصقاعِ</p>
+                <p>فَيا طالِبي العِلمِ وَمُرتادي الحِجا<br>
+                جَزاكُم إِلهُ العَرشِ خَيرَ جِماعِ</p>
+                <p>وَإِن غِبتُمُ عَن ناظِري وَمَجالِسي<br>
+                فَذِكراكُمُ في القَلبِ غَيرُ مُضاعِ</p>
+                <p>فَدُمتُم ذُخراً لِلعِلمِ وَالفَضلِ وَالنُّهى<br>
+                وَعُدتُم إِلَينا في قَوابِلِ الساعِ</p>
+            </div>
+            <button class="button" id="next-btn">التالي</button>
+        </div>
+        
+        <div id="feedback-content" class="hidden">
+            <h1>تقييم المحاضرة</h1>
+            <div class="poem">
+                <p>أَلا أَيُّها السَّامِرُ المُرتَجِي، قَد كانَ في مَجلِسِكُم ذو العُلى<br>
+                سِيافٌ مِن آلِ دُورِيفُورسَ، يَسطَعُ عِلماً كَالنَّجمِ في الدُّجى<br>
+                فَهَل راقَكُم ما أَفاضَ عَلَيكُم، مِن دُرَرِ المَعرِفَةِ والحِجى؟<br>
+                وَكَيفَ تَرَونَ ما قَد أَسدى، أَتُعطونَهُ التِّلادَ أَم الطَّريفا؟<br>
+                فَقولوا وَلا تَبخَلوا بِرَأيٍ، فَإِنَّ الصِّدقَ يُجلي كُلَّ خَفيّا</p>
+            </div>
+            <div class="emoji-container">
+                <span class="emoji" onclick="showFeedbackForm('⭐')">⭐</span>
+                <span class="emoji" onclick="showFeedbackForm('🏆')">🏆</span>
+                <span class="emoji" onclick="showFeedbackForm('👑')">👑</span>
+                <span class="emoji" onclick="showFeedbackForm('💎')">💎</span>
+                <span class="emoji" onclick="showFeedbackForm('🔍')">🔍</span>
+            </div>
+            <div id="feedback-form">
+                <textarea id="feedback-text" placeholder="اكتب رأيك هنا..."></textarea>
+                <button class="button" onclick="submitFeedback()">إرسال التقييم</button>
+            </div>
+        </div>
+        
+        <div id="thank-you-content" class="hidden">
+            <h1>شكراً على تقييمك</h1>
+            <div class="thank-you-text">h1rrow</div>
+            <p>شكراً لكم لحضور محاضرتي، كان معكم البروفيسور و مدير كلية إكسفورد لجلواخ الفصاحة، سياف آل دوريفورس، من جامعة إكسفورد</p>
+        </div>
+    </div>
+
+    <div id="admin-container" class="container hidden">
+        <h1>لوحة التحكم</h1>
+        <button class="button" onclick="showFeedbacks()">عرض التقييمات</button>
+        <div id="feedback-list"></div>
+    </div>
+
+    <script>
+        const validTokens = ['h1rrow'];
+        const adminToken = 'admin_h1rrow_2024';
+        
+        let currentContent = 'main';
+        const loginContainer = document.getElementById('login-container');
+        const mainContainer = document.getElementById('main-container');
+        const adminContainer = document.getElementById('admin-container');
+        const mainContent = document.getElementById('main-content');
+        const feedbackContent = document.getElementById('feedback-content');
+        const thankYouContent = document.getElementById('thank-you-content');
+        const nextBtn = document.getElementById('next-btn');
+        const feedbackForm = document.getElementById('feedback-form');
+        let selectedEmoji = '';
+        
+        // استخدام متغير عام لتخزين التقييمات بدلاً من localStorage
+        let feedbacks = [];
+        
+        function login() {
+            const token = document.getElementById('token-input').value;
+            if (validTokens.includes(token)) {
+                loginContainer.classList.add('hidden');
+                mainContainer.classList.remove('hidden');
+            } else if (token === adminToken) {
+                loginContainer.classList.add('hidden');
+                adminContainer.classList.remove('hidden');
+            } else {
+                alert('رمز الدخول غير صحيح');
+            }
+        }
+        
+        nextBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            mainContent.classList.add('fade-out');
+            setTimeout(() => {
+                mainContent.classList.add('hidden');
+                feedbackContent.classList.remove('hidden');
+                currentContent = 'feedback';
+            }, 2000);
+        });
+        
+        function showFeedbackForm(emoji) {
+            selectedEmoji = emoji;
+            feedbackForm.style.display = 'block';
+        }
+        
+        function submitFeedback() {
+            const feedbackText = document.getElementById('feedback-text').value;
+            if (feedbackText.trim() !== '') {
+                const feedback = { emoji: selectedEmoji, text: feedbackText };
+                saveFeedback(feedback);
+                
+                feedbackContent.classList.add('fade-out');
+                setTimeout(() => {
+                    feedbackContent.classList.add('hidden');
+                    thankYouContent.classList.remove('hidden');
+                    currentContent = 'thank-you';
+                    setTimeout(selfDestruct, 30000);
+                }, 2000);
+            } else {
+                alert('يرجى كتابة تقييمك قبل الإرسال.');
+            }
+        }
+
+        function saveFeedback(feedback) {
+            feedbacks.push(feedback);
+        }
+
+        function showFeedbacks() {
+            const feedbackList = document.getElementById('feedback-list');
+            feedbackList.innerHTML = '';
+            feedbacks.forEach((feedback, index) => {
+                const feedbackItem = document.createElement('div');
+                feedbackItem.classList.add('feedback-item');
+                feedbackItem.innerHTML = `
+                    <p><strong>التقييم ${index + 1}:</strong></p>
+                    <p>الرمز التعبيري: ${feedback.emoji}</p>
+                    <p>التعليق: ${feedback.text}</p>
+                `;
+                feedbackList.appendChild(feedbackItem);
+            });
+        }
+
+        function selfDestruct() {
+            document.body.innerHTML = '';
+            document.body.style.backgroundColor = '#000000';
+        }
+
+        window.onbeforeunload = function() {
+            return "هل أنت متأكد أنك تريد مغادرة الصفحة؟";
+        };
+    </script>
+</body>
+  </html>
+  
